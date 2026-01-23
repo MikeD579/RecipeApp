@@ -17,12 +17,13 @@ model Ingredients {
 }
 
 model Recipes {
-  id          Int           @id @default(autoincrement())
-  name        String
-  sourceUrl   String
-  imageUrl    String
-  servings    Int
-  prepTime    Int
-  cookTime    Int
-  Ingredients Ingredients[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  sourceUrl    String
+  imageUrl     String
+  servings     Int
+  prepTime     Int
+  cookTime     Int
+  Ingredients  Ingredients[]
+  instructions String
 }
