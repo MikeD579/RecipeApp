@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="83.212677mm"
+   height="86.171577mm"
+   viewBox="0 0 83.21268 86.17158"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="recipeAppLogo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.4503086"
+     inkscape:cx="145.48627"
+     inkscape:cy="211.67908"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-77.630523,-100.21216)">
+    <circle
+       style="fill:none;stroke:#1a1a1a;stroke-width:5.29166;stroke-linecap:round;stroke-dasharray:none"
+       id="path1"
+       cx="125.01086"
+       cy="150.55139"
+       r="33.186516" />
+    <path
+       d="m 84.084631,103.31753 c -0.901747,-0.96055 -2.394281,-1.00154 -3.346502,-0.0919 -0.95222,0.90962 -0.992855,2.4152 -0.09111,3.37574 l 17.684586,18.83765 c 0.901749,0.96054 2.394295,1.00152 3.346515,0.0919 0.95221,-0.90963 0.99285,-2.41521 0.0911,-3.37576 z"
+       style="fill:none;stroke:#1a1a1a;stroke-width:4.7625;stroke-linecap:round;stroke-dasharray:none"
+       id="path3" />
+    <path
+       style="fill:none;stroke:#1a1a1a;stroke-width:2.64583;stroke-linecap:round;stroke-dasharray:none"
+       d="m 112.2507,138.70341 c 1.54398,-2.89208 11.67567,-14.22973 26.4527,-1.82432 14.77703,12.4054 -3.83108,13.68243 -2.55405,22.62162 1.27702,8.93918 -10.39865,11.49324 -12.58784,10.58108 -2.18919,-0.91217 -15.14189,-3.44826 -14.0473,-22.98649 0.12245,-2.18576 1.19251,-5.49981 2.73649,-8.39189 z"
+       id="path4"
+       sodipodi:nodetypes="zssssz" />
+    <ellipse
+       style="fill:none;stroke:#1a1a1a;stroke-width:2.64583;stroke-linecap:round;stroke-dasharray:none"
+       id="path5"
+       cx="123.92639"
+       cy="145.17973"
+       rx="6.202703"
+       ry="5.9290538" />
+  </g>
+</svg>
