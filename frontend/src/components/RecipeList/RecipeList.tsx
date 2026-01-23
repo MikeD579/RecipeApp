@@ -1,11 +1,13 @@
 import type { RecipeResponse } from '../../api/recipeApi';
+import { Loading } from '../Loading';
 
 interface Props {
   recipes: RecipeResponse[];
+  isLoading: boolean;
 }
 
-export const RecipeList = ({ recipes }: Props) => {
-  // If the list is empty, React makes it easy to handle with a simple "if"
+export const RecipeList = ({ recipes, isLoading }: Props) => {
+  if (isLoading) return <Loading />;
   if (recipes.length === 0) return <p>No recipes found yet!</p>;
 
   return (
