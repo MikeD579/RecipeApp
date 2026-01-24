@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { recipeApi } from "../../api/recipeApi";
-import type { RecipeResponse } from "../../api/recipeApi";
+import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
 import { CookingPot, CalendarDays, LayoutList } from "lucide-react";
 import { RecipeList } from "../../components/Recipe/RecipeList";
 import { HorizontalList } from "../../components/Base/HorizontalList";
 import { CategoryHorizontalListCard } from "../../components/Category/CategoryHorizontalListCard";
 import { RecipeHorizontalListCard } from "../../components/Recipe/RecipeHorizontalListCard";
+import { categoryApi, type CategoryResponse } from "../../api/categoryApi";
 
 // interface Props {
 //   isLoading: boolean;
@@ -14,6 +14,7 @@ import { RecipeHorizontalListCard } from "../../components/Recipe/RecipeHorizont
 
 export const Home = () => {
 
+  const [categoryList, setCategoryList] = useState<CategoryResponse[]>([]);
   const [recipeList, setRecipeList] = useState<RecipeResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -21,6 +22,9 @@ export const Home = () => {
     const fetchRecipes = async () => {
       try {
         setIsLoading(true);
+        const categories = await categoryApi.list();
+        setCategoryList(categories);
+
         const recipes = await recipeApi.list();
         setRecipeList(recipes);
       } catch (error) {
@@ -65,14 +69,7 @@ export const Home = () => {
         onMore={() => { }}
       >
         <CategoryHorizontalListCard
-          items={[
-            { name: "Breakfast" },
-            { name: "Lunch" },
-            { name: "Dinner" },
-            { name: "Dessert" },
-            { name: "Snacks" },
-            { name: "Beverages" },
-          ]}
+          items={categoryList}
           height="h-24"
         />
       </HorizontalList>

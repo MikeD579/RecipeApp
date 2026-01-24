@@ -13,7 +13,7 @@ export const RecipeHorizontalListCard = ({ items, height }: RecipeHorizontalList
           <div className={`w-48 ${height} bg-white rounded-lg flex items-center justify-center`}>
             <div className="w-full border border-neutral-300 rounded-lg shadow-lg bg-white" onClick={() => console.log("clicked", item.id)}>
               <img src={item.imageUrl} alt={item.name} className={`w-full ${height} object-cover rounded-md`} />
-              <h3 className="absolute bottom-4 pl-6 pr-2 bg-gray-100/90 text-gray-800 font-bold text-2xl">{item.name}</h3>
+              <div className="absolute bottom-4 pl-6 pr-2 bg-gray-100/90 text-gray-800 font-light text-xl">{item.name}</div>
             </div>
           </div>
         </div>
