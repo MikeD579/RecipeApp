@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
 import { CookingPot, CalendarDays, LayoutList } from "lucide-react";
-import { RecipeList } from "../../components/Recipe/RecipeList";
 import { HorizontalList } from "../../components/Base/HorizontalList";
 import { CategoryHorizontalListCard } from "../../components/Category/CategoryHorizontalListCard";
 import { RecipeHorizontalListCard } from "../../components/Recipe/RecipeHorizontalListCard";
 import { categoryApi, type CategoryResponse } from "../../api/categoryApi";
+import { Loading } from "../../components/Base/Loading";
 
-// interface Props {
-//   isLoading: boolean;
-//   setIsModalOpen: (isOpen: boolean) => void;
-// }
+type Page = "home" | "recipes" | "categories";
 
-export const Home = () => {
+interface Props {
+  setCurrentPage: (page: Page) => void;
+}
+
+export const Home = ({ setCurrentPage }: Props) => {
 
   const [categoryList, setCategoryList] = useState<CategoryResponse[]>([]);
   const [recipeList, setRecipeList] = useState<RecipeResponse[]>([]);
@@ -66,27 +67,26 @@ export const Home = () => {
       <HorizontalList
         title="Categories"
         height="h-24"
-        onMore={() => { }}
+        onMore={() => { setCurrentPage("categories") }}
       >
         <CategoryHorizontalListCard
           items={categoryList}
           height="h-24"
         />
+        {isLoading && <Loading />}
       </HorizontalList>
       <div className="mb-6"></div>
       <HorizontalList
         title="Recipes"
         height="h-48"
-        onMore={() => { }}
+        onMore={() => { setCurrentPage("recipes") }}
       >
         <RecipeHorizontalListCard
           items={recipeList}
           height="h-48"
         />
+        {isLoading && <Loading />}
       </HorizontalList>
-
-      {/* recipe list */}
-      {/* <RecipeList recipes={recipeList} isLoading={isLoading} /> */}
     </div>
   )
 }
