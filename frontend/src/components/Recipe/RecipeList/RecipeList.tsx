@@ -1,5 +1,5 @@
-import type { RecipeResponse } from '../../api/recipeApi';
-import { Loading } from '../Loading';
+import type { RecipeResponse } from '../../../api/recipeApi';
+import { Loading } from '../../Base/Loading';
 
 interface Props {
   recipes: RecipeResponse[];

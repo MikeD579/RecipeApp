@@ -1,6 +1,6 @@
 import React from 'react';
 import { Search } from 'lucide-react';
-import { RecipeCreateEditModal } from '../components/RecipeCreateEditModal';
+import { RecipeCreateEditModal } from '../components/Recipe/RecipeCreateEditModal';
 import { useState } from 'react';
 
 interface Props {

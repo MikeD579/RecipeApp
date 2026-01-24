@@ -1,8 +1,8 @@
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
-import { Button } from "../Button";
-import { recipeApi } from "../../api/recipeApi";
-import type { RecipeResponse } from "../../api/recipeApi";
+import { Button } from "../../Base/Button";
+import { recipeApi } from "../../../api/recipeApi";
+import type { RecipeResponse } from "../../../api/recipeApi";
 
 interface RecipeCreateEditModalProps {
   isOpen: boolean;
