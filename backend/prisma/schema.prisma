@@ -25,5 +25,13 @@ model Recipes {
   prepTime     Int
   cookTime     Int
   Ingredients  Ingredients[]
+  Categories   Categories[]
   instructions String
+}
+
+model Categories {
+  id       Int       @id @default(autoincrement())
+  imageUrl String
+  name     String
+  Recipes  Recipes[]
 }
