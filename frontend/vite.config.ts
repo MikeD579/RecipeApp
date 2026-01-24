@@ -10,7 +10,10 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      devOptions: { enabled: true },
+      devOptions: {
+        enabled: true,
+        suppressWarnings: true
+      },
       registerType: 'autoUpdate',
       manifest: {
         name: 'My Recipe App',

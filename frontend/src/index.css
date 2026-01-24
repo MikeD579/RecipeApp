@@ -1,4 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=LINE+Seed+JP&display=swap');
 @import "tailwindcss";
+
+@theme {
+  /* 1. Define your custom font variables here */
+  --font-line: "LINE Seed JP", sans-serif;
+  --font-display: "Dancing Script", cursive;
+}
+
+@layer base {
+
+  /* 2. Write your global CSS rules here */
+  body {
+    @apply bg-gray-100 text-gray-900 antialiased;
+    font-family: var(--font-line);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+}
 
 .loading-spinner {
   width: 18px;
@@ -17,4 +42,11 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
