@@ -1,6 +1,7 @@
 import type { RecipesModel } from "../../generated/prisma/models";
 import { prisma } from '../../lib/prisma.js';
 import cast from "../utils/cast";
+import { scrapeRecipe } from "../services/scraper";
 
 const casts: { [key: string]: (val: any) => any } = {
     // Add any necessary type casts here
@@ -46,5 +47,26 @@ const del = async (id: number) => {
     });
 }
 
+const scrape = async (url: string) => {
+    const recipe: {
+        title: string;
+        image: string;
+        servings: number;
+        prepTime: number;
+        cookTime: number;
+        instructions: string;
+    } = await scrapeRecipe(url) as any;
 
-export default { list, show, store, update, delete: del };
+    // console.log("Scraped recipe:", recipe);
+    return {
+        name: recipe.title,
+        sourceUrl: url,
+        imageUrl: recipe.image,
+        servings: recipe.servings,
+        prepTime: recipe.prepTime,
+        cookTime: recipe.cookTime,
+        instructions: recipe.instructions
+    };
+}
+
+export default { list, show, store, update, delete: del, scrape };

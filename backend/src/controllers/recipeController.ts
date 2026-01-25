@@ -70,4 +70,21 @@ const del = async (req: Request, res: Response) => {
     });
 }
 
-export default { list, show, create, update, del };
+const scrape = async (req: Request, res: Response) => {
+    const { url } = req.body;
+    if (!url) {
+        return res.status(400).json({ message: "URL is required" });
+    }
+
+    try {
+        const scrapedRecipe = await Recipe.scrape(url);
+        res.status(200).json({
+            message: "Recipe scraped successfully",
+            data: scrapedRecipe
+        });
+    } catch (error: any) {
+        res.status(500).json({ message: "Error scraping recipe", error: error.message });
+    }
+}
+
+export default { list, show, create, update, del, scrape };

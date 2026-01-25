@@ -30,7 +30,15 @@ export const RecipeCreateEditModal = ({ isOpen, onClose }: RecipeCreateEditModal
     instructions: ''
   });
 
-  // const handleScrape = async (url: string) => {}
+  const handleScrape = async () => {
+    try {
+      const scrapedRecipe = await recipeApi.scrape(recipe.sourceUrl);
+      setRecipe({ ...recipe, ...scrapedRecipe });
+    } catch (error) {
+      console.error("Error scraping recipe:", error);
+    }
+  }
+
   const handleSaveRecipe = async () => {
     try {
       const response = await recipeApi.save(recipe);
@@ -66,11 +74,13 @@ export const RecipeCreateEditModal = ({ isOpen, onClose }: RecipeCreateEditModal
                   type="text"
                   id="sourceUrl"
                   className="w-full h-10 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:inset-ring-1 focus:inset-ring-blue-500 focus:border-blue-500"
+                  value={recipe.sourceUrl}
+                  onChange={(e) => setRecipe({ ...recipe, sourceUrl: e.target.value })}
                 />
               </div>
               <Button
                 label="Scrape"
-                onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.preventDefault(); console.log("Scrape clicked"); }}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.preventDefault(); handleScrape(); }}
                 variant="primary"
                 styleName="rounded-l-none"
               />
@@ -124,6 +134,16 @@ export const RecipeCreateEditModal = ({ isOpen, onClose }: RecipeCreateEditModal
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   value={recipe.cookTime}
                   onChange={(e) => setRecipe({ ...recipe, cookTime: parseInt(e.target.value) || 0 })}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2" htmlFor="instructions">Instructions</label>
+                <input
+                  type="text"
+                  id="instructions"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={recipe.instructions}
+                  onChange={(e) => setRecipe({ ...recipe, instructions: e.target.value })}
                 />
               </div>
               <Button

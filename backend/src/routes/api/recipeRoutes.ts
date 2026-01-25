@@ -8,4 +8,6 @@ router.post('/', recipeController.create);
 router.put('/:id', recipeController.update);
 router.delete('/:id', recipeController.del);
 
+router.post('/scrape', recipeController.scrape);
+
 export default router;

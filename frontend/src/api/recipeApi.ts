@@ -14,7 +14,7 @@ export interface RecipeResponse {
 
 export const recipeApi = {
   scrape: async (url: string): Promise<RecipeResponse> => {
-    const { data } = await api.post<ApiResponse<RecipeResponse>>('/scrape', { url });
+    const { data } = await api.post<ApiResponse<RecipeResponse>>('/recipes/scrape', { url });
     return data.data;
   },
 
