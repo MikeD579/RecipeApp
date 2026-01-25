@@ -6,9 +6,9 @@ import { scrapeRecipe } from "../services/scraper";
 const casts: { [key: string]: (val: any) => any } = {
     // Add any necessary type casts here
     id: (val: any) => parseInt(val),
-    servings: (val: any) => parseInt(val),
-    prepTime: (val: any) => parseInt(val),
-    cookTime: (val: any) => parseInt(val),
+    total_time: (val: any) => parseInt(val),
+    instructions: (val: any) => Array.isArray(val) ? val : JSON.parse(val),
+    ingredients: (val: any) => Array.isArray(val) ? val : JSON.parse(val),
 };
 
 const list = async () => {
@@ -17,8 +17,7 @@ const list = async () => {
 
 const show = async (id: number) => {
     return await prisma.recipes.findUnique({
-        where: { id: id },
-        include: { Ingredients: true },
+        where: { id: id }
     });
 };
 
@@ -37,7 +36,6 @@ const update = async (id: number, updateData: RecipesModel) => {
     return await prisma.recipes.update({
         where: { id: id },
         data: cast.castData(updateData, casts),
-        include: { Ingredients: true }
     });
 }
 
@@ -50,22 +48,22 @@ const del = async (id: number) => {
 const scrape = async (url: string) => {
     const recipe: {
         title: string;
+        total_time: number;
+        yields: string;
+        ingredients: string[];
+        instructions: string[];
         image: string;
-        servings: number;
-        prepTime: number;
-        cookTime: number;
-        instructions: string;
     } = await scrapeRecipe(url) as any;
 
     // console.log("Scraped recipe:", recipe);
     return {
-        name: recipe.title,
-        sourceUrl: url,
-        imageUrl: recipe.image,
-        servings: recipe.servings,
-        prepTime: recipe.prepTime,
-        cookTime: recipe.cookTime,
-        instructions: recipe.instructions
+        title: recipe.title,
+        total_time: recipe.total_time,
+        yields: recipe.yields,
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        image: recipe.image,
+        source: url,
     };
 }
 
