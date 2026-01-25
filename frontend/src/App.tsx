@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { DefaultLayout } from "./layouts/default";
-import { Home } from "./features/Home";
 import { Recipes } from "./features/Recipes";
 import { Categories } from "./features/Categories";
 
-type Page = "home" | "recipes" | "categories";
+type Page = "recipes" | "mealplans";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>("home");
+  const [currentPage, setCurrentPage] = useState<Page>("recipes");
 
   return (
     <DefaultLayout currentPage={currentPage} onPageChange={setCurrentPage}>
-      {currentPage === "home" && <Home setCurrentPage={setCurrentPage} />}
       {currentPage === "recipes" && <Recipes setCurrentPage={setCurrentPage} />}
-      {currentPage === "categories" && <Categories setCurrentPage={setCurrentPage} />}
+      {currentPage === "mealplans" && <Categories setCurrentPage={setCurrentPage} />}
     </DefaultLayout>
   )
 }
