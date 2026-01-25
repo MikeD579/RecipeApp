@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
 import { RecipeList } from "../../components/Recipe/RecipeList";
 
-type Page = "home" | "recipes" | "categories";
-
-interface Props {
-  setCurrentPage: (page: Page) => void;
-}
-
-export const Recipes = ({ setCurrentPage }: Props) => {
+export const Recipes = () => {
   const [recipeList, setRecipeList] = useState<RecipeResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

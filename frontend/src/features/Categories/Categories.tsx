@@ -2,13 +2,7 @@ import { useState, useEffect } from "react";
 import { categoryApi, type CategoryResponse } from "../../api/categoryApi";
 import { Loading } from "../../components/Base/Loading";
 
-type Page = "home" | "recipes" | "categories";
-
-interface Props {
-  setCurrentPage: (page: Page) => void;
-}
-
-export const Categories = ({ setCurrentPage }: Props) => {
+export const Categories = () => {
   const [categoryList, setCategoryList] = useState<CategoryResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 

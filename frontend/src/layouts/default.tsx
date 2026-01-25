@@ -2,16 +2,13 @@ import React from 'react';
 import { Search, ScrollText, FilePlusCorner, CalendarPlus } from 'lucide-react';
 import { RecipeCreateEditModal } from '../components/Recipe/RecipeCreateEditModal';
 import { useState, useEffect } from 'react';
-
-type Page = "recipes" | "mealplans";
+import { NavLink } from "react-router-dom";
 
 interface Props {
   children: React.ReactNode;
-  currentPage?: Page;
-  onPageChange?: (page: Page) => void;
 }
 
-export const DefaultLayout: React.FC<Props> = ({ children, currentPage = "recipes", onPageChange }: Props) => {
+export const DefaultLayout: React.FC<Props> = ({ children }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [windowHeight, setWindowHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 0);
@@ -21,11 +18,6 @@ export const DefaultLayout: React.FC<Props> = ({ children, currentPage = "recipe
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const navItems = [
-    { name: 'Recipes', id: 'recipes' as Page, icon: ScrollText },
-    { name: 'Meal Plans', id: 'mealplans' as Page, icon: CalendarPlus },
-  ];
 
   return (
     <div className="min-h-screen w-full bg-gray-200 p-6">
@@ -66,22 +58,28 @@ export const DefaultLayout: React.FC<Props> = ({ children, currentPage = "recipe
 
       <div className="fixed bottom-0 left-0 w-full">
         <div className="grid grid-cols-2 w-full p-2 bg-white gap-4 mt-3">
-          {navItems.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => onPageChange?.(item.id)}
-              className={
-                currentPage === item.id
-                  ? 'bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium'
-                  : 'text-gray-400 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-              }
-            >
-              <span className="flex items-center justify-center gap-2">
-                <item.icon size={20} className="" />
-                <div>{item.name}</div>
-              </span>
-            </button>
-          ))}
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `flex-1 text-center py-2 rounded-md transition-colors ${isActive ? 'bg-gray-800 text-white' : 'text-gray-600'}`
+            }
+          >
+            <span className="flex items-center justify-center gap-2">
+              <ScrollText size={20} className="" />
+              Recipes
+            </span>
+          </NavLink>
+          <NavLink
+            to="/mealplans"
+            className={({ isActive }) =>
+              `flex-1 text-center py-2 rounded-md transition-colors ${isActive ? 'bg-gray-800 text-white' : 'text-gray-600'}`
+            }
+          >
+            <span className="flex items-center justify-center gap-2">
+              <CalendarPlus size={20} className="" />
+              Meal Plans
+            </span>
+          </NavLink>
         </div>
       </div>
       <RecipeCreateEditModal

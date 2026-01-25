@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DefaultLayout } from "./layouts/default";
 import { Recipes } from "./features/Recipes";
 import { Categories } from "./features/Categories";
-
-type Page = "recipes" | "mealplans";
+// Import your new features as you build them:
+// import { RecipeDetail } from "./features/RecipeDetail";
+// import { RecipeEdit } from "./features/RecipeEdit";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>("recipes");
-
   return (
-    <DefaultLayout currentPage={currentPage} onPageChange={setCurrentPage}>
-      {currentPage === "recipes" && <Recipes setCurrentPage={setCurrentPage} />}
-      {currentPage === "mealplans" && <Categories setCurrentPage={setCurrentPage} />}
-    </DefaultLayout>
-  )
+    <BrowserRouter>
+      <DefaultLayout>
+        <Routes>
+          {/* Home displays your Recipes list */}
+          <Route path="/" element={<Recipes />} />
+
+          {/* Categories/Mealplans */}
+          <Route path="/mealplans" element={<Categories />} />
+
+          {/* Dynamic Recipe Routes */}
+          {/* <Route path="/recipe/:id" element={<RecipeDetail />} /> */}
+          {/* <Route path="/recipe/:id/edit" element={<RecipeEdit />} /> */}
+
+          {/* Catch-all: Redirect back to home if path doesn't exist */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </DefaultLayout>
+    </BrowserRouter>
+  );
 }
