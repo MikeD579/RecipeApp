@@ -26,5 +26,10 @@ export const recipeApi = {
   list: async (): Promise<RecipeResponse[]> => {
     const { data } = await api.get<ApiResponse<RecipeResponse[]>>('/recipes');
     return data.data;
+  },
+
+  show: async (id: number): Promise<RecipeResponse> => {
+    const { data } = await api.get<ApiResponse<RecipeResponse>>(`/recipes/${id}`);
+    return data.data;
   }
 };

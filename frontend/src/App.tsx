@@ -2,8 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { DefaultLayout } from "./layouts/default";
 import { Recipes } from "./features/Recipes";
 import { Categories } from "./features/Categories";
-// Import your new features as you build them:
-// import { RecipeDetail } from "./features/RecipeDetail";
+import { RecipeDetail } from "./features/RecipeDetail";
 // import { RecipeEdit } from "./features/RecipeEdit";
 
 export default function App() {
@@ -18,7 +17,7 @@ export default function App() {
           <Route path="/mealplans" element={<Categories />} />
 
           {/* Dynamic Recipe Routes */}
-          {/* <Route path="/recipe/:id" element={<RecipeDetail />} /> */}
+          <Route path="/recipe/:id" element={<RecipeDetail />} />
           {/* <Route path="/recipe/:id/edit" element={<RecipeEdit />} /> */}
 
           {/* Catch-all: Redirect back to home if path doesn't exist */}
