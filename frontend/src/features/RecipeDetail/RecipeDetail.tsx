@@ -32,7 +32,7 @@ export function RecipeDetail() {
           </Link>
         </div>
         <img
-          src={recipe.imageUrl || 'https://via.placeholder.com/800x600?text=No+Image'}
+          src={recipe.image || 'https://via.placeholder.com/800x600?text=No+Image'}
           className="w-full h-full object-cover"
           alt={recipe.title}
         />
@@ -51,7 +51,7 @@ export function RecipeDetail() {
       </div>
 
       {/* Ingredients Section */}
-      {/* <section className="mb-8">
+      <section className="mb-8">
         <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
         <ul className="space-y-3">
           {recipe.ingredients?.map((ing: string, i: number) => (
@@ -61,22 +61,22 @@ export function RecipeDetail() {
             </li>
           ))}
         </ul>
-      </section> */}
+      </section>
 
       {/* Instructions Section */}
-      {/* <section>
+      <section>
         <h2 className="text-2xl font-bold mb-4">Instructions</h2>
         <div className="space-y-6">
           {recipe.instructions?.map((step: string, i: number) => (
-            <div key={i} className="flex gap-4">
-              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-sm">
+            <div key={i} className="flex gap-2">
+              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 text-gray-700 flex items-center justify-center font-bold text-sm">
                 {i + 1}
               </span>
               <p className="text-gray-700 pt-1">{step}</p>
             </div>
           ))}
         </div>
-      </section> */}
+      </section>
     </div>
   );
 }

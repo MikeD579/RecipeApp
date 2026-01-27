@@ -16,8 +16,8 @@ export const RecipeList = ({ recipes, isLoading }: Props) => {
       {recipes.map((recipe) => (
         <NavLink to={`/recipe/${recipe.id}`} key={recipe.id}>
           <div className="relative w-full border border-neutral-300 rounded-lg shadow-md bg-white" onClick={() => console.log("clicked")}>
-            <img src={recipe.imageUrl} alt={recipe.name} className="w-full h-48 object-cover rounded-md" />
-            <h3 className="absolute bottom-4 pl-6 pr-2 bg-gray-100/90 text-gray-800 font-bold text-2xl">{recipe.name}</h3>
+            <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover rounded-md" />
+            <h3 className="absolute bottom-4 pl-6 pr-2 bg-gray-100/90 text-gray-800 font-bold text-2xl">{recipe.title}</h3>
           </div>
         </NavLink>
       ))}

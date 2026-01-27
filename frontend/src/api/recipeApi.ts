@@ -3,13 +3,13 @@ import type { ApiResponse } from './axiosInstance';
 
 export interface RecipeResponse {
   id?: number;
-  name: string;
-  sourceUrl: string;
-  imageUrl?: string;
-  servings?: number;
-  prepTime?: number;
-  cookTime?: number;
-  instructions?: string;
+  title: string;
+  total_time?: number;
+  yields?: string;
+  ingredients?: string[];
+  instructions?: string[];
+  image?: string;
+  source: string;
 }
 
 export const recipeApi = {
@@ -20,6 +20,11 @@ export const recipeApi = {
 
   save: async (recipe: RecipeResponse): Promise<ApiResponse<RecipeResponse>> => {
     const { data } = await api.post('/recipes', recipe);
+    return data.data;
+  },
+
+  update: async (id: number, recipe: RecipeResponse): Promise<ApiResponse<RecipeResponse>> => {
+    const { data } = await api.put(`/recipes/${id}`, recipe);
     return data.data;
   },
 

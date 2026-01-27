@@ -21,18 +21,18 @@ export const RecipeCreateEditModal = ({ isOpen, onClose }: RecipeCreateEditModal
   }, [isOpen]);
 
   const [recipe, setRecipe] = useState<RecipeResponse>({
-    name: '',
-    imageUrl: '',
-    servings: 1,
-    sourceUrl: '',
-    prepTime: 0,
-    cookTime: 0,
-    instructions: ''
+    title: '',
+    yields: '1',
+    total_time: 0,
+    instructions: [],
+    ingredients: [],
+    image: '',
+    source: '',
   });
 
   const handleScrape = async () => {
     try {
-      const scrapedRecipe = await recipeApi.scrape(recipe.sourceUrl);
+      const scrapedRecipe = await recipeApi.scrape(recipe.source);
       setRecipe({ ...recipe, ...scrapedRecipe });
     } catch (error) {
       console.error("Error scraping recipe:", error);
@@ -74,8 +74,8 @@ export const RecipeCreateEditModal = ({ isOpen, onClose }: RecipeCreateEditModal
                   type="text"
                   id="sourceUrl"
                   className="w-full h-10 px-3 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:inset-ring-1 focus:inset-ring-blue-500 focus:border-blue-500"
-                  value={recipe.sourceUrl}
-                  onChange={(e) => setRecipe({ ...recipe, sourceUrl: e.target.value })}
+                  value={recipe.source}
+                  onChange={(e) => setRecipe({ ...recipe, source: e.target.value })}
                 />
               </div>
               <Button
@@ -87,65 +87,72 @@ export const RecipeCreateEditModal = ({ isOpen, onClose }: RecipeCreateEditModal
             </form>
             <form className="flex flex-col">
               <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2" htmlFor="imageUrl">Image URL</label>
+                <label className="block text-gray-700 font-semibold mb-2" htmlFor="image">Image</label>
                 <input
                   type="text"
-                  id="imageUrl"
+                  id="image"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={recipe.imageUrl}
-                  onChange={(e) => setRecipe({ ...recipe, imageUrl: e.target.value })}
+                  value={recipe.image}
+                  onChange={(e) => setRecipe({ ...recipe, image: e.target.value })}
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2" htmlFor="name">Name</label>
+                <label className="block text-gray-700 font-semibold mb-2" htmlFor="title">Title</label>
                 <input
                   type="text"
-                  id="name"
+                  id="title"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={recipe.name}
-                  onChange={(e) => setRecipe({ ...recipe, name: e.target.value })}
+                  value={recipe.title}
+                  onChange={(e) => setRecipe({ ...recipe, title: e.target.value })}
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2" htmlFor="servings">Servings</label>
+                <label className="block text-gray-700 font-semibold mb-2" htmlFor="yields">Yields</label>
                 <input
-                  type="number"
-                  id="servings"
+                  type="text"
+                  id="yields"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={recipe.servings}
-                  onChange={(e) => setRecipe({ ...recipe, servings: parseInt(e.target.value) || 0 })}
+                  value={recipe.yields}
+                  onChange={(e) => setRecipe({ ...recipe, yields: e.target.value })}
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2" htmlFor="prepTime">Prep Time (minutes)</label>
+                <label className="block text-gray-700 font-semibold mb-2" htmlFor="total_time">Total Time (minutes)</label>
                 <input
                   type="number"
-                  id="prepTime"
+                  id="total_time"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={recipe.prepTime}
-                  onChange={(e) => setRecipe({ ...recipe, prepTime: parseInt(e.target.value) || 0 })}
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2" htmlFor="cookTime">Cook Time (minutes)</label>
-                <input
-                  type="number"
-                  id="cookTime"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={recipe.cookTime}
-                  onChange={(e) => setRecipe({ ...recipe, cookTime: parseInt(e.target.value) || 0 })}
+                  value={recipe.total_time}
+                  onChange={(e) => setRecipe({ ...recipe, total_time: parseInt(e.target.value) || 0 })}
                 />
               </div>
               <div className="mb-4">
                 <label className="block text-gray-700 font-semibold mb-2" htmlFor="instructions">Instructions</label>
-                <input
-                  type="text"
+                <textarea
                   id="instructions"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={recipe.instructions}
-                  onChange={(e) => setRecipe({ ...recipe, instructions: e.target.value })}
+                  value={recipe.instructions?.[0] || ''}
+                  onChange={(e) => setRecipe({ ...recipe, instructions: [e.target.value] })}
                 />
               </div>
+              {
+                recipe.ingredients?.map((ing, index) => (
+                  <div className="mb-4" key={index}>
+                    <label className="block text-gray-700 font-semibold mb-2" htmlFor={`ingredient-${index}`}>Ingredient {index + 1}</label>
+                    <input
+                      type="text"
+                      id={`ingredient-${index}`}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={ing}
+                      onChange={(e) => {
+                        const newIngredients = [...(recipe.ingredients || [])];
+                        newIngredients[index] = e.target.value;
+                        setRecipe({ ...recipe, ingredients: newIngredients });
+                      }}
+                    />
+                  </div>
+                ))
+              }
               <Button
                 label="Save Recipe"
                 onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.preventDefault(); handleSaveRecipe(); }}

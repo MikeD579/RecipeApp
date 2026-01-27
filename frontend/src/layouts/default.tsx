@@ -29,12 +29,12 @@ export const DefaultLayout: React.FC<Props> = ({ children }: Props) => {
         </footer>
       </div>
 
-      <button
-        onClick={() => setIsModalOpen(true)}
+      <NavLink
+        to="/recipe/new"
         className={`${isSearchActive ? "hidden" : "fixed"} bottom-28 right-4 bg-gray-800 hover:bg-gray-700 text-white p-4 rounded-full shadow-md`}
       >
         <FilePlusCorner size={20} />
-      </button>
+      </NavLink>
 
       <div
         className={`${isSearchActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-screen min-h-screen bg-white/60 backdrop-blur-sm flex flex-col justify-start items-center shadow-md inset-shadow-md transition-all duration-300`}
