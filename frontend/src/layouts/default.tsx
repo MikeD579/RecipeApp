@@ -2,7 +2,7 @@ import React from 'react';
 import { Search, ScrollText, FilePlusCorner, CalendarPlus } from 'lucide-react';
 import { RecipeCreateEditModal } from '../components/Recipe/RecipeCreateEditModal';
 import { useState, useEffect } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 interface Props {
   children: React.ReactNode;
@@ -12,6 +12,8 @@ export const DefaultLayout: React.FC<Props> = ({ children }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [windowHeight, setWindowHeight] = useState(typeof window !== 'undefined' ? window.innerHeight : 0);
+  const location = useLocation();
+  const isExactRoute = location.pathname !== '/';
 
   useEffect(() => {
     const handleResize = () => setWindowHeight(window.innerHeight);
@@ -31,7 +33,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }: Props) => {
 
       <NavLink
         to="/recipe/new"
-        className={`${isSearchActive ? "hidden" : "fixed"} bottom-28 right-4 bg-gray-800 hover:bg-gray-700 text-white p-4 rounded-full shadow-md`}
+        className={`${isExactRoute ? "hidden" : "fixed"} bottom-28 right-4 bg-gray-800 hover:bg-gray-700 text-white p-4 rounded-full shadow-md`}
       >
         <FilePlusCorner size={20} />
       </NavLink>
@@ -45,7 +47,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }: Props) => {
         style={{
           transform: isSearchActive ? 'translateY(0)' : `translateY(${windowHeight - 9 * 16}px)`,
         }}
-        className="fixed top-12 left-0 flex items-center w-[calc(100%-2rem)] h-8 ml-4 p-2 bg-white/60 backdrop-blur-sm rounded-full shadow-lg inset-shadow-md transition-transform duration-300 z-10"
+        className={`${isExactRoute ? "hidden" : "fixed"} top-12 left-0 flex items-center w-[calc(100%-2rem)] h-8 ml-4 p-2 bg-white/60 backdrop-blur-sm rounded-full shadow-lg inset-shadow-md transition-transform duration-300 z-10`}
         onClick={() => setIsSearchActive(!isSearchActive)}
       >
         <Search size={20} className="mr-2 text-gray-600" />

@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Clock, Users, Edit3 } from "lucide-react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
@@ -24,12 +24,12 @@ export function RecipeDetail() {
       <div className="relative h-82 w-full mb-6 overflow-hidden rounded-3xl shadow-lg">
         {/* Navigation Header */}
         <div className="flex items-center justify-between mb-3 bg-transparent p-4 absolute top-0 left-0 w-full z-10">
-          <Link to="/" className="flex items-center p-1 bg-gray-500/80 rounded-full shadow-sm text-white text-sm font-medium">
+          <NavLink to="/" className="flex items-center p-1 bg-gray-500/90 rounded-full shadow-sm text-white text-sm font-medium">
             <ChevronLeft size={24} />
-          </Link>
-          <Link to={`/recipe/${id}/edit`} className="flex items-center gap-2 px-4 py-2 bg-gray-500/80 rounded-full shadow-sm text-white text-sm font-medium">
+          </NavLink>
+          <NavLink to={`/recipe/${id}/edit`} className="flex items-center gap-2 px-4 py-2 bg-gray-500/90 rounded-full shadow-sm text-white text-sm font-medium">
             <Edit3 size={16} /> Edit
-          </Link>
+          </NavLink>
         </div>
         <img
           src={recipe.image || 'https://via.placeholder.com/800x600?text=No+Image'}

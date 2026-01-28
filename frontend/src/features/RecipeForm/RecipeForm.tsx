@@ -1,6 +1,6 @@
-import { useState, useEffect, use } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Save, Globe, Loader2, Plus, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
+import { Save, Globe, Loader2, Plus, Trash2, ChevronLeft, Clock, Users } from "lucide-react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
 
 export function RecipeForm() {
@@ -18,7 +18,7 @@ export function RecipeForm() {
       const data = await recipeApi.scrape(url);
       // "Merge" the scraped data into the form
       setFormData({ ...formData, ...data });
-    } catch (err) {
+    } catch {
       alert("Failed to scrape. You can still enter it manually!");
     } finally {
       setLoading(false);
@@ -43,7 +43,12 @@ export function RecipeForm() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (id) {
+      setLoading(true);
       // Fetch existing recipe data to edit
       recipeApi.show(parseInt(id)).then((data) => {
         setFormData(data);
@@ -51,6 +56,7 @@ export function RecipeForm() {
         alert("Failed to load recipe data.");
       });
     }
+    setLoading(false);
   }, [id]);
 
   return (
@@ -79,94 +85,144 @@ export function RecipeForm() {
 
       {/* SECTION: The Form */}
       <div className="space-y-6">
+        <div className="relative h-82 w-full mb-6 overflow-hidden rounded-3xl shadow-lg border border-dashed border-gray-500">
+          {/* Navigation Header */}
+          <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center gap-2 mb-3 bg-transparent p-4">
+            <NavLink to={id ? `/recipe/${id}` : "/"} className="absolute left-4 top-4 flex items-center p-1 bg-gray-500 rounded-full shadow-sm text-white text-sm font-medium">
+              <ChevronLeft size={24} />
+            </NavLink>
+            <button
+              onClick={() => {
+                const imageUrl = prompt("Enter image URL", formData.image || "");
+                if (imageUrl !== null) {
+                  setFormData({ ...formData, image: imageUrl });
+                }
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-500 rounded-full shadow-lg text-white text-sm font-medium"
+            >
+              {formData.image ? "Change Image" : "Add Image"}
+            </button>
+            <button
+              onClick={() => setFormData({ ...formData, image: "" })}
+              className="flex items-center gap-2 px-4 py-2 bg-red-500 rounded-full shadow-lg text-white text-sm font-medium"
+            >
+              <Trash2 size={16} /> Remove
+            </button>
+          </div>
+          <img
+            src={formData.image}
+            className="w-full h-full object-cover opacity-40"
+            alt={formData.title}
+          />
+        </div>
+
         <input
-          className="text-3xl font-display w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none pb-2"
+          className="text-4xl font-display w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none pb-2"
           placeholder="Recipe Title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
 
-        {/* Dynamic Ingredients List */}
-        <div className="bg-white p-4 rounded-2xl border border-gray-200">
-          <h3 className="text-xl font-bold mb-3">Ingredients</h3>
-          {formData.ingredients?.map((ing, idx) => (
-            <div key={idx} className="flex gap-2 mb-2">
-              <input
-                className="w-full p-2 bg-white rounded-lg border border-gray-200"
-                value={ing}
-                onChange={(e) => {
-                  const newIngs = [...(formData.ingredients || [])];
-                  newIngs[idx] = e.target.value;
-                  setFormData({ ...formData, ingredients: newIngs });
-                }}
-              />
-              <button onClick={() => {
-                const newIngs = [...(formData.ingredients || [])];
-                newIngs.splice(idx, 1);
-                setFormData({ ...formData, ingredients: newIngs });
-              }}><Trash2 size={18} className="text-gray-400" /></button>
-            </div>
-          ))}
-          <button
-            className="flex items-center gap-1 text-blue-600 font-medium text-sm mt-2"
-            onClick={() => {
-              const newIngs = [...(formData.ingredients || []), ''];
-              setFormData({ ...formData, ingredients: newIngs });
-            }}
-          >
-            <Plus size={16} /> Add Ingredient
-          </button>
+        <div className="flex gap-4 mb-8">
+          <div className="flex items-center gap-1 text-gray-600 bg-white px-3 py-1 rounded-full text-sm border border-gray-100">
+            <Clock size={16} />
+
+            <input type="number"
+              className="w-14 text-center bg-transparent focus:outline-none border-b border-gray-300 focus:border-blue-500"
+              value={formData.total_time || ''}
+              onChange={(e) => setFormData({ ...formData, total_time: parseInt(e.target.value) || 0 })}
+            />
+
+            mins
+          </div>
+          <div className="flex items-center gap-1 text-gray-600 bg-white px-3 py-1 rounded-full text-sm border border-gray-100">
+            <Users size={16} />
+            <input type="text"
+              className="w-20 text-center bg-transparent focus:outline-none border-b border-gray-300 focus:border-blue-500"
+              value={formData.yields || ''}
+              onChange={(e) => setFormData({ ...formData, yields: e.target.value })}
+            />
+          </div>
         </div>
 
+        {/* Dynamic Ingredients List */}
+        <h3 className="text-xl font-bold mb-3">Ingredients</h3>
+        {formData.ingredients?.map((ing, idx) => (
+          <div key={idx} className="flex gap-2 mb-2">
+            <textarea
+              rows={2}
+              className="w-full p-2 bg-white rounded-lg border border-gray-200"
+              value={ing}
+              onChange={(e) => {
+                const newIngs = [...(formData.ingredients || [])];
+                newIngs[idx] = e.target.value;
+                setFormData({ ...formData, ingredients: newIngs });
+              }}
+            />
+            <button onClick={() => {
+              const newIngs = [...(formData.ingredients || [])];
+              newIngs.splice(idx, 1);
+              setFormData({ ...formData, ingredients: newIngs });
+            }}><Trash2 size={18} className="text-gray-400" /></button>
+          </div>
+        ))}
+        <button
+          className="w-full flex items-center justify-center gap-1 text-white font-medium text-sm mt-2 p-2 bg-gray-500 rounded-lg"
+          onClick={() => {
+            const newIngs = [...(formData.ingredients || []), ''];
+            setFormData({ ...formData, ingredients: newIngs });
+          }}
+        >
+          <Plus size={16} /> Add Ingredient
+        </button>
+
         {/* Instructions */}
-        <div className="bg-white p-4 rounded-2xl border border-gray-200">
-          <h3 className="text-xl font-bold mb-3">Instructions</h3>
-          {formData.instructions?.map((step, idx) => (
-            <div key={idx} className="flex flex-col gap-2 mb-2 rounded-lg bg-gray-200">
-              <div className="flex px-2 justify-between text-gray-700 font-bold text-sm">
-                <div>
-                  {idx + 1}
-                </div>
-                <button
-                  onClick={() => {
-                    const newSteps = [...(formData.instructions || [])];
-                    newSteps.splice(idx, 1);
-                    setFormData({ ...formData, instructions: newSteps });
-                  }}
-                >
-                  <Trash2 size={18} className="text-gray-400" />
-                </button>
+        <h3 className="text-xl font-bold mb-3">Instructions</h3>
+        {formData.instructions?.map((step, idx) => (
+          <div key={idx} className="flex flex-col gap-1 mb-4">
+            <div className="flex px-2 justify-between text-gray-700 font-bold text-sm">
+              <div>
+                {idx + 1}
               </div>
-              <textarea
-                rows={10}
-                className="w-full h-auto text-wrap p-2 bg-white rounded-lg border border-gray-200"
-                value={step}
-                onChange={(e) => {
+              <button
+                onClick={() => {
                   const newSteps = [...(formData.instructions || [])];
-                  newSteps[idx] = e.target.value;
+                  newSteps.splice(idx, 1);
                   setFormData({ ...formData, instructions: newSteps });
                 }}
-              />
+              >
+                <Trash2 size={18} className="text-gray-400" />
+              </button>
             </div>
-          ))}
-          <button
-            className="flex items-center gap-1 text-blue-600 font-medium text-sm mt-2"
-            onClick={() => {
-              const newSteps = [...(formData.instructions || []), ''];
-              setFormData({ ...formData, instructions: newSteps });
-            }}
-          >
-            <Plus size={16} /> Add Instruction
-          </button>
-        </div>
+            <textarea
+              rows={10}
+              className="w-full h-auto text-wrap p-2 bg-white rounded-lg border border-gray-200"
+              value={step}
+              onChange={(e) => {
+                const newSteps = [...(formData.instructions || [])];
+                newSteps[idx] = e.target.value;
+                setFormData({ ...formData, instructions: newSteps });
+              }}
+            />
+          </div>
+        ))}
+        <button
+          className="w-full flex items-center justify-center gap-1 text-white font-medium text-sm mt-2 p-2 bg-gray-500 rounded-lg"
+          onClick={() => {
+            const newSteps = [...(formData.instructions || []), ''];
+            setFormData({ ...formData, instructions: newSteps });
+          }}
+        >
+          <Plus size={16} /> Add Instruction
+        </button>
       </div>
 
       {/* Floating Save Button */}
       <button
         onClick={handleSave}
-        className="fixed bottom-24 right-6 bg-green-600 text-white flex items-center gap-2 px-6 py-3 rounded-full shadow-xl hover:scale-105 transition-transform"
+        className="fixed bottom-28 right-4 bg-green-700 text-white p-4 rounded-full shadow-md"
       >
-        <Save size={20} /> Save Recipe
+        <Save size={20} />
       </button>
     </div>
   );
