@@ -17,7 +17,11 @@ export const Search = ({ items, hidden, className }: Props) => {
   const [filteredItems, setFilteredItems] = useState<RecipeResponse[]>([]);
 
   const fuse = new Fuse<RecipeResponse>(items, {
-    keys: ['title', 'ingredients'],
+    keys: [
+      'title',
+      'ingredients',
+      'Categories.name',
+    ],
     threshold: 0.3,
   });
 
@@ -43,34 +47,47 @@ export const Search = ({ items, hidden, className }: Props) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    if (isSearchActive) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isSearchActive]);
+
   return (
     <div>
       {/* search backdrop */}
       <div className={`${isSearchActive ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} fixed top-0 left-0 w-screen min-h-screen bg-white/60 backdrop-blur-sm flex flex-col justify-start items-center shadow-md inset-shadow-md transition-all duration-300`}></div>
       {/* search bar */}
-      <div
-        style={{ transform: isSearchActive ? 'translateY(0)' : `translateY(${windowHeight - 9 * 16}px)` }}
-        className={`${hidden ? "hidden" : "fixed"} top-12 left-0 flex items-center w-[calc(100%-2rem)] h-8 ml-4 p-2 bg-white/60 backdrop-blur-sm rounded-full shadow-lg inset-shadow-md transition-transform duration-300 z-10`}
-      >
-        {
-          isSearchActive
-            ? (<button onClick={() => setIsSearchActive(false)}><ChevronLeft size={20} className="mr-2 text-gray-600" /></button>)
-            : (<SearchIcon size={20} className="mr-2 text-gray-600" />)
-        }
-        <input
-          value={searchQuery}
-          type="text"
-          placeholder="Search"
-          className="w-[calc(100%-2rem)] bg-transparent focus:outline-none text-gray-800 placeholder-gray-500"
-          onFocus={() => setIsSearchActive(true)}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
-        <RecipeList
-          recipes={filteredItems}
-          isLoading={false}
-          className={`absolute top-12 left-0 w-full max-h-screen overflow-y-auto p-4 ${isSearchActive ? "opacity-100" : "opacity-0"} transition-all duration-300`}
-          onClick={() => handleSelectItem()}
-        />
+      <div className={`${hidden ? "hidden" : "fixed"} top-12 left-0 w-full flex justify-center px-4 z-10 ${className || ""}`}>
+        <div
+          style={{ transform: isSearchActive ? 'translateY(0)' : `translateY(${windowHeight - 9 * 16}px)` }}
+          className={`flex items-center w-full max-w-2xl mx-auto h-8 p-2 bg-white/60 backdrop-blur-sm rounded-full shadow-lg inset-shadow-md transition-transform duration-300 z-10`}
+        >
+          {
+            isSearchActive
+              ? (<button onClick={() => { setIsSearchActive(false); setSearchQuery(""); }}><ChevronLeft size={20} className="mr-2 text-gray-600" /></button>)
+              : (<SearchIcon size={20} className="mr-2 text-gray-600" />)
+          }
+          <input
+            value={searchQuery}
+            type="text"
+            placeholder="Search"
+            className="w-full bg-transparent focus:outline-none text-gray-800 placeholder-gray-500"
+            onFocus={() => setIsSearchActive(true)}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+          <RecipeList
+            recipes={filteredItems}
+            isLoading={false}
+            className={`absolute top-12 left-0 w-full mb-20 max-h-screen overflow-y-auto p-4 ${isSearchActive ? "opacity-100" : "opacity-0"} transition-all duration-300`}
+            onClick={() => handleSelectItem()}
+          />
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { api } from './axiosInstance';
 import type { ApiResponse } from './axiosInstance';
+import type { CategoryResponse } from './categoryApi';
 
 export interface RecipeResponse {
   id?: number;
@@ -10,6 +11,7 @@ export interface RecipeResponse {
   instructions?: string[];
   image?: string;
   source: string;
+  Categories?: CategoryResponse[];
 }
 
 export const recipeApi = {

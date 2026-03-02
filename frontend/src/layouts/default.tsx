@@ -15,7 +15,7 @@ export const DefaultLayout: React.FC<Props> = ({ children }: Props) => {
 
   return (
     <div className="min-h-screen w-full bg-gray-200 p-6">
-      <div className="flex flex-col items-center justify-start">
+      <div className="max-w-2xl mx-auto pb-20">
         {children}
 
         <footer className="mt-12 text-gray-500 text-sm text-center">

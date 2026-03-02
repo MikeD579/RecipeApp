@@ -42,14 +42,13 @@ const update = async (req: Request, res: Response) => {
         return res.status(400).json({ message: "Invalid recipe ID" });
     }
 
-    const updatedRecipe = await Recipe.update(id, req.body)
-        .catch((error) => {
-            return res.status(404).json({ message: error.message });
-        });
+    const updatedRecipe = await Recipe.update(id, req.body);
 
     if (!updatedRecipe) {
         return res.status(404).json({ message: "Recipe not found" });
     }
+
+    // console.log("Updated recipe:", updatedRecipe);
 
     res.status(200).json({
         message: "Recipe updated",

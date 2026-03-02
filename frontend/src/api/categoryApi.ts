@@ -8,9 +8,9 @@ export interface CategoryResponse {
 }
 
 export const categoryApi = {
-  create: async (category: CategoryResponse): Promise<ApiResponse<CategoryResponse>> => {
+  create: async (category: CategoryResponse): Promise<CategoryResponse> => {
     const { data } = await api.post('/categories', category);
-    return data.data;
+    return (data as ApiResponse<CategoryResponse>).data;
   },
 
   list: async (): Promise<CategoryResponse[]> => {
@@ -23,9 +23,9 @@ export const categoryApi = {
     return data.data;
   },
 
-  update: async (category: CategoryResponse): Promise<ApiResponse<CategoryResponse>> => {
+  update: async (category: CategoryResponse): Promise<CategoryResponse> => {
     const { data } = await api.put(`/categories/${category.id}`, category);
-    return data.data;
+    return (data as ApiResponse<CategoryResponse>).data;
   },
 
   delete: async (id: number): Promise<void> => {

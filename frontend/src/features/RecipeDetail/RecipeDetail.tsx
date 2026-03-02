@@ -2,6 +2,7 @@ import { useParams, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Clock, Users, Edit3 } from "lucide-react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
+import type { CategoryResponse } from "../../api/categoryApi";
 
 export function RecipeDetail() {
   const { id } = useParams();
@@ -41,12 +42,23 @@ export function RecipeDetail() {
       {/* Title & Metadata */}
       <h1 className="font-display text-4xl mb-4 text-gray-900">{recipe.title}</h1>
 
-      <div className="flex gap-4 mb-8">
+      <div className="flex gap-4 mb-2">
         <div className="flex items-center gap-1 text-gray-600 bg-white px-3 py-1 rounded-full text-sm border border-gray-100">
           <Clock size={16} /> {recipe.total_time || '--'} mins
         </div>
         <div className="flex items-center gap-1 text-gray-600 bg-white px-3 py-1 rounded-full text-sm border border-gray-100">
           <Users size={16} /> {recipe.yields || 'Variable'}
+        </div>
+      </div>
+
+      {/* Categories */}
+      <div className="mb-8">
+        <div className="flex flex-wrap gap-2">
+          {recipe.Categories?.map((cat: CategoryResponse) => (
+            <span key={cat.id} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm shadow-sm">
+              {cat.name}
+            </span>
+          ))}
         </div>
       </div>
 

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { Save, Globe, Loader2, Plus, Trash2, ChevronLeft, Clock, Users } from "lucide-react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
+import { type CategoryResponse } from "../../api/categoryApi";
 
 export function RecipeForm() {
   const { id } = useParams();
@@ -10,7 +11,16 @@ export function RecipeForm() {
   const [url, setUrl] = useState("");
 
   // Single state object for the whole recipe
-  const [formData, setFormData] = useState({} as RecipeResponse);
+  const [formData, setFormData] = useState({
+    title: "",
+    total_time: 0,
+    yields: "",
+    ingredients: [] as string[],
+    instructions: [] as string[],
+    source: "",
+    Categories: []
+  } as RecipeResponse);
+  const [newCategory, setNewCategory] = useState("");
 
   const handleScrape = async () => {
     setLoading(true);
@@ -25,10 +35,28 @@ export function RecipeForm() {
     }
   };
 
+  const handleAddCategory = (value: string) => {
+    setNewCategory("");
+    if (value.trim() === "") return;
+
+    const existingCategories = formData.Categories || [];
+    const existingNames = existingCategories.map(cat => cat.name.toLowerCase());
+
+    if (existingNames.includes(value.trim().toLowerCase())) {
+      alert("Category already exists!");
+      return;
+    }
+
+    setFormData({
+      ...formData,
+      Categories: [...existingCategories, { name: value.trim() } as CategoryResponse]
+    });
+  };
+
   const handleSave = async () => {
     if (id) {
       recipeApi.update(parseInt(id), formData as RecipeResponse).then(() => {
-        navigate('/');
+        navigate('/recipe/' + id);
       }).catch(() => {
         alert("Failed to update recipe.");
       });
@@ -116,6 +144,7 @@ export function RecipeForm() {
           />
         </div>
 
+        {/* Title */}
         <input
           className="text-4xl font-display w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none pb-2"
           placeholder="Recipe Title"
@@ -123,6 +152,7 @@ export function RecipeForm() {
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
 
+        {/* Cooking info */}
         <div className="flex gap-4 mb-8">
           <div className="flex items-center gap-1 text-gray-600 bg-white px-3 py-1 rounded-full text-sm border border-gray-100">
             <Clock size={16} />
@@ -143,6 +173,52 @@ export function RecipeForm() {
               onChange={(e) => setFormData({ ...formData, yields: e.target.value })}
             />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          {/* Categories */}
+          <div className="flex items-center mb-2">
+            {
+              (formData.Categories || []).length === 0 && (
+                <div className="flex items-center bg-white px-3 py-1 rounded-full text-sm leading-snug shadow-sm text-gray-400 border border-gray-100">
+                  No Categories Yet
+                </div>
+              )
+            }
+            {(formData.Categories && formData.Categories.length > 0) && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {formData.Categories?.map((cat, idx) => (
+                  <div key={idx} className="flex items-center gap-1 bg-white px-3 py-1 rounded-full text-sm leading-snug shadow-sm text-gray-700 border border-gray-300">
+                    <p>{cat.name}</p>
+                    <button onClick={() => {
+                      const newCats = [...(formData.Categories || [])];
+                      newCats.splice(idx, 1);
+                      setFormData({ ...formData, Categories: newCats });
+                    }}>
+                      <Trash2 size={14} className="text-gray-500" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* TODO: I need this to search existing categories
+              Then create if not found. For now, it just creates a new one.
+              on save it should connect the recipe to the category.
+          */}
+          <input
+            className="w-full bg-transparent border-b border-gray-300 focus:border-blue-500 outline-none pb-2"
+            placeholder="Add a Category (e.g., Dessert, Vegan)"
+            value={newCategory}
+            onChange={(e) => setNewCategory(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddCategory(newCategory);
+              }
+            }}
+          />
         </div>
 
         {/* Dynamic Ingredients List */}
