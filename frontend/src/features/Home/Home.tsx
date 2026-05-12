@@ -1,26 +1,15 @@
 import { useState, useEffect } from "react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
 import { CookingPot, CalendarDays, LayoutList } from "lucide-react";
-import { HorizontalList } from "../../components/Base/HorizontalList";
-import { CategoryHorizontalListCard } from "../../components/Category/CategoryHorizontalListCard";
-import { RecipeHorizontalListCard } from "../../components/Recipe/RecipeHorizontalListCard";
 import { categoryApi, type CategoryResponse } from "../../api/categoryApi";
-import { Loading } from "../../components/Base/Loading";
-import { RecipeCreateEditModal } from "../../components/Recipe/RecipeCreateEditModal";
 
-type Page = "home" | "recipes" | "categories";
+export const Home = () => {
 
-interface Props {
-  setCurrentPage: (page: Page) => void;
-}
+  const [, setCategoryList] = useState<CategoryResponse[]>([]);
+  const [, setRecipeList] = useState<RecipeResponse[]>([]);
+  const [, setIsLoading] = useState<boolean>(true);
 
-export const Home = ({ setCurrentPage }: Props) => {
-
-  const [categoryList, setCategoryList] = useState<CategoryResponse[]>([]);
-  const [recipeList, setRecipeList] = useState<RecipeResponse[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  const [isCreateRecipeModalOpen, setIsCreateRecipeModalOpen] = useState(false);
+  const [, setIsCreateRecipeModalOpen] = useState(false);
 
   const openCreateRecipeModal = () => {
     setIsCreateRecipeModalOpen(true);
@@ -79,34 +68,6 @@ export const Home = ({ setCurrentPage }: Props) => {
           <div className='text-gray-800 text-center'>plan your week</div>
         </div>
       </div>
-      <HorizontalList
-        title="Categories"
-        height="h-24"
-        onMore={() => { setCurrentPage("categories") }}
-      >
-        <CategoryHorizontalListCard
-          items={categoryList}
-          height="h-24"
-        />
-        {isLoading && <Loading />}
-      </HorizontalList>
-      <div className="mb-6"></div>
-      <HorizontalList
-        title="Recipes"
-        height="h-48"
-        onMore={() => { setCurrentPage("recipes") }}
-      >
-        <RecipeHorizontalListCard
-          items={recipeList}
-          height="h-48"
-        />
-        {isLoading && <Loading />}
-      </HorizontalList>
-
-      <RecipeCreateEditModal
-        isOpen={isCreateRecipeModalOpen}
-        onClose={() => setIsCreateRecipeModalOpen(false)}
-      />
     </div>
   )
 }
