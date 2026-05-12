@@ -1,7 +1,7 @@
 import { parse } from "node:path";
-import type { CategoriesModel } from "../../generated/prisma/models";
+import type { CategoriesModel } from "../../generated/prisma/models.js";
 import { prisma } from '../../lib/prisma.js';
-import cast from "../utils/cast";
+import cast from "../utils/cast.js";
 
 const casts: { [key: string]: (val: any) => any } = {
   // Add any necessary type casts here

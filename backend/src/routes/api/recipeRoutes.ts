@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import recipeController from '../../controllers/recipeController';
+import recipeController from '../../controllers/recipeController.js';
 
 router.get('/', recipeController.list);
 router.get('/:id', recipeController.show);

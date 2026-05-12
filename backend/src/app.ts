@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import router from "./routes/api/index";
+import router from "./routes/api/index.js";
 
 // Load routes
 

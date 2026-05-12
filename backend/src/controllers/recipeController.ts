@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import Recipe from '../models/recipe';
+import Recipe from '../models/recipe.js';
 
 const list = async (req: Request, res: Response) => {
     const recipes = await Recipe.list();

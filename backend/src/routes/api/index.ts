@@ -1,6 +1,6 @@
 import express from "express";
-import recipeRoutes from './recipeRoutes';
-import categoryRoutes from "./categoryRoutes";
+import recipeRoutes from './recipeRoutes.js';
+import categoryRoutes from "./categoryRoutes.js";
 
 const router = express.Router();
 

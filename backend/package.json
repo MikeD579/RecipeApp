@@ -2,10 +2,11 @@
   "name": "recipeapp1",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "npx tsx src/app.ts",
-    "prod": "npx tsc && node dist/app.js",
+    "prod": "npx tsc && echo '{\"type\": \"module\"}' > dist/package.json && node dist/src/app.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },

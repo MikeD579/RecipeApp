@@ -1,7 +1,7 @@
-import type { RecipesModel } from "../../generated/prisma/models";
+import type { RecipesModel } from "../../generated/prisma/models.js";
 import { prisma } from '../../lib/prisma.js';
-import cast from "../utils/cast";
-import { scrapeRecipe } from "../services/scraper";
+import cast from "../utils/cast.js";
+import { scrapeRecipe } from "../services/scraper.js";
 
 const casts: { [key: string]: (val: any) => any } = {
     // Add any necessary type casts here
