@@ -4,9 +4,14 @@ import path from 'path';
 export const scrapeRecipe = (url: string) => {
   return new Promise((resolve, reject) => {
     // Path to the python executable in your venv
-    const pythonExe = path.join(__dirname, '../../../python-scraper/venv/bin/python3');
-    // Path to the script
-    const scriptPath = path.join(__dirname, '../../../python-scraper/scraper.py');
+    var pythonExe = path.join(__dirname, '../../../python-scraper/venv/bin/python3');
+    var scriptPath = path.join(__dirname, '../../../python-scraper/scraper.py');
+
+    if (__dirname.includes('backend/dist')) {
+      // If running from the compiled JS in dist, adjust the path accordingly
+      pythonExe = path.join(__dirname, '../../../../python-scraper/venv/bin/python3');
+      scriptPath = path.join(__dirname, '../../../../python-scraper/scraper.py');
+    }
 
     const process = spawn(pythonExe, [scriptPath, url]);
 
