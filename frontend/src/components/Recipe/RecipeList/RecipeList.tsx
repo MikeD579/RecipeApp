@@ -11,7 +11,7 @@ interface Props {
 
 export const RecipeList = ({ recipes, isLoading, className, onClick }: Props) => {
   if (isLoading) return <Loading />;
-  if (recipes.length === 0) return;
+  if (!recipes?.length) return; //todo: fix this for search <div className="text-center text-gray-500">No recipes found.</div>;
 
   return (
     <div className={`space-y-4 w-full ${className}`}>

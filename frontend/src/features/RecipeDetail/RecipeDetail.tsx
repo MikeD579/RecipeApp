@@ -1,4 +1,4 @@
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ChevronLeft, Clock, Users, Edit3 } from "lucide-react";
 import { recipeApi, type RecipeResponse } from "../../api/recipeApi";
@@ -6,7 +6,19 @@ import type { CategoryResponse } from "../../api/categoryApi";
 
 export function RecipeDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [recipe, setRecipe] = useState<RecipeResponse | null>(null);
+
+  const handleDelete = async () => {
+    if (window.confirm("Are you sure you want to delete this recipe?")) {
+      await recipeApi.delete(Number(id)).then(() => {
+        navigate("/");
+        console.log("Recipe deleted successfully");
+      }).catch((error) => {
+        console.error("Error deleting recipe:", error);
+      });
+    }
+  };
 
   useEffect(() => {
     // Fetch recipe from your Node backend
@@ -89,6 +101,16 @@ export function RecipeDetail() {
           ))}
         </div>
       </section>
+
+      {/* Delete Button */}
+      <div className="mt-16 flex justify-center">
+        <button
+          className="px-4 py-2 bg-red-500 text-white rounded-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          onClick={handleDelete}
+        >
+          Delete Recipe
+        </button>
+      </div>
     </div>
   );
 }

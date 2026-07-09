@@ -38,5 +38,10 @@ export const recipeApi = {
   show: async (id: number): Promise<RecipeResponse> => {
     const { data } = await api.get<ApiResponse<RecipeResponse>>(`/recipes/${id}`);
     return data.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    const { data } = await api.delete<ApiResponse<void>>(`/recipes/${id}`);
+    return data.data;
   }
 };

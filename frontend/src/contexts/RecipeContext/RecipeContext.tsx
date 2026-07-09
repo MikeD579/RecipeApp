@@ -24,8 +24,13 @@ export const RecipeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Load from cache first
-    const cached = localStorage.getItem('recipes');
-    if (cached) setRecipeList(JSON.parse(cached));
+    const cachedRecipes = localStorage.getItem('recipes');
+
+    if (cachedRecipes === 'undefined' || cachedRecipes === null) {
+      setRecipeList([]);
+    } else {
+      setRecipeList(JSON.parse(cachedRecipes));
+    }
 
     fetchRecipes();
   }, []);
