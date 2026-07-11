@@ -48,15 +48,15 @@ export const Search = ({ items, hidden, className }: Props) => {
   }, []);
 
   useEffect(() => {
-    if (isSearchActive) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
+    if (hidden) {
+      const id = window.setTimeout(() => {
+        setIsSearchActive(false);
+        setSearchQuery("");
+        setFilteredItems([]);
+      }, 0);
+      return () => clearTimeout(id);
     }
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [isSearchActive]);
+  }, [hidden]);
 
   return (
     <div>
@@ -70,7 +70,7 @@ export const Search = ({ items, hidden, className }: Props) => {
         >
           {
             isSearchActive
-              ? (<button onClick={() => { setIsSearchActive(false); setSearchQuery(""); }}><ChevronLeft size={20} className="mr-2 text-gray-600" /></button>)
+              ? (<button onClick={() => { handleSelectItem(); }}><ChevronLeft size={20} className="mr-2 text-gray-600" /></button>)
               : (<SearchIcon size={20} className="mr-2 text-gray-600" />)
           }
           <input
@@ -84,7 +84,7 @@ export const Search = ({ items, hidden, className }: Props) => {
           <RecipeList
             recipes={filteredItems}
             isLoading={false}
-            className={`absolute top-12 left-0 w-full mb-20 max-h-screen overflow-y-auto p-4 ${isSearchActive ? "opacity-100" : "opacity-0"} transition-all duration-300`}
+            className={`absolute top-12 left-0 w-full pb-56 max-h-screen overflow-y-auto p-4 ${isSearchActive ? "opacity-100" : "opacity-0"} transition-all duration-300`}
             onClick={() => handleSelectItem()}
           />
         </div>
